@@ -1,7 +1,6 @@
 package ru.yandex.practicum;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -43,13 +42,9 @@ class WordleGameTest {
         String v = "Вау! Вы победили!";
         assertEquals(v, wordleGame.testWord(wordleGame.getAnswer()));
         String nonExistingWord = "abcde";
-        assertThrows(WordNotFoundInDictionary.class, () -> {
-            wordleGame.testWord(nonExistingWord);
-        });
+        assertThrows(WordNotFoundInDictionary.class, () -> wordleGame.testWord(nonExistingWord));
         String nonFiveChar = "сон";
-        assertThrows(IllegalArgumentException.class, () -> {
-            wordleGame.testWord(nonFiveChar);
-        });
+        assertThrows(IllegalArgumentException.class, () -> wordleGame.testWord(nonFiveChar));
         String attempt = "сукно";
         if (!attempt.equals(wordleGame.getAnswer())) {
             Assertions.assertTrue(wordleGame.testWord(attempt).contains("-") ||
@@ -68,15 +63,13 @@ class WordleGameTest {
         String firstAttemps = wordleGame.testWord("сукно");
         boolean realy = true;
         for (int i = 0; i < 5; i++) {
-            if (String.valueOf(firstAttemps.charAt(i)).equals("-")) {
-                realy = !(wordleGame.testWord(" ").contains(String.valueOf(firstAttempsWord.charAt(i))));
-            } else if (String.valueOf(firstAttemps.charAt(i)).equals("+")) {
-                realy = String.valueOf(wordleGame.testWord(" ").charAt(i)).equals(String.valueOf(wordleGame.getAnswer().charAt(i)));
-            } else if (String.valueOf(firstAttemps.charAt(i)).equals("^")) {
-                realy = wordleGame.testWord(" ").contains(String.valueOf(firstAttempsWord.charAt(i)));
-                System.out.println(String.valueOf(wordleGame.testWord(" ").charAt(i)));
-            }
-
+            realy = switch (String.valueOf(firstAttemps.charAt(i))) {
+                case "-" -> !(wordleGame.testWord(" ").contains(String.valueOf(firstAttempsWord.charAt(i))));
+                case "+" ->
+                        String.valueOf(wordleGame.testWord(" ").charAt(i)).equals(String.valueOf(wordleGame.getAnswer().charAt(i)));
+                case "^" -> wordleGame.testWord(" ").contains(String.valueOf(firstAttempsWord.charAt(i)));
+                default -> realy;
+            };
         }
         assertTrue(realy);
     }
