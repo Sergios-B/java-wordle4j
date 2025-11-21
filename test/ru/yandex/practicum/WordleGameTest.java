@@ -74,9 +74,8 @@ class WordleGameTest {
                 realy = String.valueOf(wordleGame.testWord(" ").charAt(i)).equals(String.valueOf(wordleGame.getAnswer().charAt(i)));
             } else if (String.valueOf(firstAttemps.charAt(i)).equals("^")) {
                 realy = wordleGame.testWord(" ").contains(String.valueOf(firstAttempsWord.charAt(i)));
-            } if (!realy) {
-                    System.out.println(String.valueOf(wordleGame.testWord(" ").charAt(i)));
-                }
+                System.out.println(String.valueOf(wordleGame.testWord(" ").charAt(i)));
+            }
 
         }
         assertTrue(realy);

@@ -31,7 +31,7 @@ class WordleDictionaryLoaderTest {
         }
         Assertions.assertArrayEquals(testList.toArray(), trowList.toArray());
         Assertions.assertFalse(testList.contains(ee));
-        for (String x : testList){
+        for (String x : testList) {
             Assertions.assertEquals(5, x.length());
         }
     }
