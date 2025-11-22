@@ -25,11 +25,11 @@ class WordleGameTest {
 
     @Test
     void getSteps() throws WordNotFoundInDictionary {
-        Assertions.assertEquals(5, wordleGame.getSteps());
+        Assertions.assertEquals(6, wordleGame.getSteps());
         wordleGame.testWord("сукно");
-        Assertions.assertEquals(4, wordleGame.getSteps());
+        Assertions.assertEquals(5, wordleGame.getSteps());
         wordleGame.testWord("");
-        Assertions.assertEquals(4, wordleGame.getSteps());
+        Assertions.assertEquals(5, wordleGame.getSteps());
     }
 
     @Test

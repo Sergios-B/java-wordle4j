@@ -2,6 +2,7 @@ package ru.yandex.practicum;
 
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -9,7 +10,7 @@ public class WordleGame {
 
     private final String answer;
 
-    private int steps = 5;
+    private int steps = 6;
 
     private final WordleDictionary dictionary;
 
@@ -56,6 +57,7 @@ public class WordleGame {
 
     public String testWord(String word) throws WordNotFoundInDictionary, IllegalArgumentException {
         if (word.isBlank()) {
+            log.println("Пустой ввод. Генерируем подсказку.");
             return giveHint();
         }
         if (word.length() != 5) {
@@ -91,53 +93,58 @@ public class WordleGame {
                 characterNon.add(String.valueOf(letterWord));
             }
         }
-        log.println("Пустой ввод. Попытка: " + word + ", осталось попыток: " + steps);
         return result.toString();
     }
 
-    public String giveHint() {
-        String maybe = null;
-        List<String> wordsss = new ArrayList<>(dictionary.mixList());
+    public String giveHint() throws RuntimeException {
+        try {
+            String maybe = null;
+            List<String> wordsss = new ArrayList<>(dictionary.mixList());
 
-        for (String x : wordsss) {
-            boolean matches = true;
+            for (String x : wordsss) {
+                boolean matches = true;
 
-            for (String a : characterContain) {
-                if (!x.contains(a)) {
-                    matches = false;
-                    break;
-                }
-            }
-
-            for (String a : characterNon) {
-                if (x.contains(a)) {
-                    matches = false;
-                    break;
-                }
-            }
-
-            if (matches) {
-                for (int i = 0; i < characterTrue.length; i++) {
-                    if (characterTrue[i] != null && !characterTrue[i].equals(String.valueOf(x.charAt(i)))) {
+                for (String a : characterContain) {
+                    if (!x.contains(a)) {
                         matches = false;
                         break;
                     }
                 }
 
-                for (int i = 0; i < 5; i++) {
-                    if (characterNoPlace.get(i) != null &&
-                            characterNoPlace.get(i).contains(String.valueOf(x.charAt(i)))) {
+                for (String a : characterNon) {
+                    if (x.contains(a)) {
                         matches = false;
                         break;
                     }
                 }
 
                 if (matches) {
-                    maybe = x;
-                    break;
+                    for (int i = 0; i < characterTrue.length; i++) {
+                        if (characterTrue[i] != null && !characterTrue[i].equals(String.valueOf(x.charAt(i)))) {
+                            matches = false;
+                            break;
+                        }
+                    }
+
+                    for (int i = 0; i < 5; i++) {
+                        if (characterNoPlace.get(i) != null &&
+                                characterNoPlace.get(i).contains(String.valueOf(x.charAt(i)))) {
+                            matches = false;
+                            break;
+                        }
+                    }
+
+                    if (matches) {
+                        maybe = x;
+                        break;
+                    }
                 }
             }
+            log.println("Правильное слово: " + getAnswer() + ". Подсказка: " + maybe);
+            return maybe;
+        } catch (RuntimeException runtimeException) {
+            log.println(Arrays.toString(runtimeException.getStackTrace()));
+            return " ";
         }
-        return maybe;
     }
 }
