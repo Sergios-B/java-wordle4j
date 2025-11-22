@@ -12,7 +12,7 @@ public class Wordle {
 
     public static void main(String[] args) throws IOException {
         PrintWriter log = new PrintWriter(new FileWriter("log.txt", true));
-        try (log){
+        try (log) {
             log.println("Начало игры");
             WordleDictionaryLoader wordleDictionaryLoader = new WordleDictionaryLoader(new File("words_ru.txt"), log);
             WordleDictionary wordleDictionary = new WordleDictionary(wordleDictionaryLoader.readFile(), log);
